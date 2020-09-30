@@ -12,16 +12,17 @@ Para usarla desde una lambda lo único necesario es incluir la librería y luego
 A continuación se muestra el código de una lambda que ...:
 
 ```javascript
-const {DSS, ORACLE} = require('tgr-sdk/clients/dss')
+const {OracleProvider} = require('tgr-sdk/clients/dss')
 
-let dss = new DSS(ORACLE);
+let dss = new OracleProvider();
 
-let sql = "select * from ...";
-let params = [...];
+let sql = "call...";
+let inputParams = [...];
+let outputParams = [...];
 
 module.exports.handler = async () => {
    try {
-       await dss.query([{sql, params}])
+       let resultsArray = await dss.query([{sql, inputParams, outputParams}])
    } catch (e) {
        console.log(e.message)
    }
