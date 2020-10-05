@@ -1,10 +1,10 @@
-# Cliente-Eventos
+# Cliente Eventos
 
-## **Introducción**
+## Introducción
 
 Tesorería requiere tener un registro de cada evento relevante que vayan ocurriendo en los procesos de negocio que manejan las aplicaciones. Para esto se ha definido una librería que registra los eventos relevantes que ocurren en cada aplicación. Por el momento esta librería está solo disponible para ser utilizada dentro de una lambda en nuestro entorno AWS.
 
-## **Cómo usar la librería.**
+## Cómo usar la librería.
 
 La librería ha sido desplegada como un layer por lo cual sin mucho esfuerzo cualquier lambda que tenga los permisos necesarios podrá usarla (más abajo se explica cómo definir los permisos).
 
@@ -55,7 +55,7 @@ functions:
      TGR_EVENTS_TOPIC: ${ssm:/tgr/common/eventos/topic}
 ```
 
-## **Permisos CodeBuild**
+## Permisos CodeBuild
 
 Para que pueda hacer el deploy automático se requiere agregar el permiso a nivel de terraform en el rol de ejecución para codebuild en el módulo de deployment:
 
