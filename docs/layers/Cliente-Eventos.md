@@ -16,7 +16,7 @@ data: el contenido de la información  a enviar a BigQuery en formato JSON
 A continuación se muestra el código de una lambda que registra un evento:
 
 ```javascript
-const {evento} = require('tgr-sdk/clients/eventos)
+const {evento} = require('tgr-sdk/clients/eventos')
 
 let nombreEvento = "CargaArchivos"
 let aplicacion = "carga-egresos"
