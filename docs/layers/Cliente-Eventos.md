@@ -18,13 +18,13 @@ A continuación se muestra el código de una lambda que registra un evento:
 ```javascript
 const {evento} = require('tgr-sdk/clients/eventos')
 
-let nombreEvento = "CargaArchivos"
+let evento = "CargaArchivos"
 let aplicacion = "carga-egresos"
 let data = {"hola": "mundo"}
 
 module.exports.handler = async () => {
    try {
-       await evento({eveto, aplicacion , data })
+       await evento({evento, aplicacion , data })
    } catch (e) {
        console.log(e.message)
    }
