@@ -1,4 +1,4 @@
-# Cliente Baskets
+# Cliente Bottleneck
 
 ## Introducción
 Esta librería permite simplificar el proceso de envío de solicitudes (requests) a APIS externas por parte de los servicios de la TGR. Especialmente cuando se requiere realizar invocaciones a servicios que tienen una cantidad acotada de transacciones que pueden atender por minuto.
