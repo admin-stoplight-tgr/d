@@ -40,17 +40,20 @@ module.exports.handler = async () => {
 const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
 
 const event = "ORDENES_PAGO"
-const bottleneck = new Bottleneck(event)
-
-bottleneck.submitConfiguration({
-  groupsPerMinute: 60
-  elementsPerGroup: 10
-})
+let bottleneck;
 
 module.exports.handler = async (orden) => {
    try {
+        if(bottleneck === undefined) {
+          bottleneck = new Bottleneck(event)
+          await bottleneck.configure({
+            notificationsPerMinute: 60
+            notificationsSize: 10
+          })
+       }
        ...
        await bottleneck.submitElement(orden);
+       ...
    } catch (e) {
        console.log(e.message)
    }
