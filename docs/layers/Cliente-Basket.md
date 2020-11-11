@@ -36,6 +36,28 @@ module.exports.handler = async () => {
 
 ```
 
+```json
+const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
+
+const event = "ORDENES_PAGO"
+const bottleneck = new Bottleneck(event)
+
+bottleneck.submitConfiguration({
+  groupsPerMinute: 60
+  elementsPerGroup: 10
+})
+
+module.exports.handler = async (orden) => {
+   try {
+       ...
+       await bottleneck.submitElement(orden);
+   } catch (e) {
+       console.log(e.message)
+   }
+}
+
+```
+
 ### Recepción transacciones.
 
 #### Serverless
@@ -55,7 +77,7 @@ functions:
           arn: !Ref TopicBasket
           topicName: TGR-#{custom::env}-TOPIC-BASKET-API
           filterPolicy:
-            eventType: "ConsultaSRCeI"
+            eventType: "ORDENES_PAGO"
 
 ```
 consumer.js
