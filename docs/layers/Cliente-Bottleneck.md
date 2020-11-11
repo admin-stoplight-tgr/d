@@ -21,26 +21,12 @@ producer.js
 ```js
 const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
 
-let bottleneck;
+let bottleneck = new Bottleneck(process.env.QUEUE);
 
 module.exports.handler = async (orden) => {
    try {
-        if(bottleneck === undefined) {
-          bottleneck = new Bottleneck(process.env.EVENT_NAME, process.env.BOTTLENECK_ENDPOINT)
-
-          await bottleneck.configure({
-            notification: {
-              perMinute: 60,
-              size: 10,
-              channel: {
-                type: 'LAMBDA',
-                arn: process.env.CONSUMER_LAMBDA_ARN
-              }
-            }
-          })
-       }
        ...
-       await bottleneck.submitElement(orden);
+       await bottleneck.enqueue(orden);
        ...
    } catch (e) {
        console.log(e.message)
@@ -50,13 +36,11 @@ module.exports.handler = async (orden) => {
 
 consumer.js
 ```js
-module.exports.handler = async (group) => {
-  ...
-  foreach(element in group) {
-    console.log(element) // un elemento del grupo
-  }
-  ...
-}
+const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
+
+let bottleneck = new Bottleneck(process.env.QUEUE,{groups: 60, size: 10, channel:{type:LAMBDA, arn:process.env.INVOKER_ARN})
+
+module.exports.handler = bottleneck.getDequeueFunction()
 ```
 
 ### Recepción transacciones.
@@ -71,13 +55,19 @@ functions:
     name: ...
     handler: consumer.handler
     environment:
-      - BOTTLENECK_ENDPOINT: ${ssm:/tgr/common/bottleneck/api/endpoint}
-      - EVENT_NAME: "ORDENES_PAGO"
-      - CONSUMER_LAMBDA_ARN: !Ref consumer
+      - QUEUE: !Ref my-queue
 
   consumer:
     name: ...
     handler: consumer.handler
+    environment: 
+      - INVOKER_ARN: !Ref invoker
+    event:
+      schedule:...
+
+  invoker:
+    name: ...
+    handler: invoker.handler
 ```
 
 
