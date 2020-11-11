@@ -38,14 +38,14 @@ module.exports.handler = async () => {
 
 ```json
 const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
+const EVENT_NAME = "ORDENES_PAGO"
 
-const event = "ORDENES_PAGO"
 let bottleneck;
 
 module.exports.handler = async (orden) => {
    try {
         if(bottleneck === undefined) {
-          bottleneck = new Bottleneck(event)
+          bottleneck = new Bottleneck(EVENT_NAME)
           await bottleneck.configure({
             notificationsPerMinute: 60
             notificationsSize: 10
@@ -64,21 +64,20 @@ module.exports.handler = async (orden) => {
 ### Recepción transacciones.
 
 #### Serverless
-Serveless.yml
+serveless.yml
 ```json
 ...
 
 functions:
   suscripcion:
-    name: tgr-lab-suscripcionClienteBasket
+    name: ...
     handler: consumer.handler
     deadLetter:
       sqs:  tgr-lab-suscripcionClienteBasket-DLQ      
-    timeout: 30
     events:
       - sns:
-          arn: !Ref TopicBasket
-          topicName: TGR-#{custom::env}-TOPIC-BASKET-API
+          arn: ${ssm:/tgr/common/bottleneck/sns/arn}
+          topicName: ${ssm:/tgr/common/bottleneck/sns/topics/event}
           filterPolicy:
             eventType: "ORDENES_PAGO"
 
