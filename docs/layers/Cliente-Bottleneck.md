@@ -19,8 +19,6 @@ Los siguientes pasos, resumen la operación en general:
 
 producer.js
 ```js
-const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
-
 module.exports.handler = async (orden) => {
    try {
        ...
