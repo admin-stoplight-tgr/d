@@ -17,35 +17,16 @@ Los siguientes pasos, resumen la operación en general:
 
 ### Definición y envío de transacciones.
 
-```json
-const {basket} = require('tgr-sdk/clients/baskets')
-
-const eventType = "ConsultaSRCeI"
-const quota = 100
-
-module.exports.handler = async () => {
-   try {
-       const b = new basket(eventType, quota);
-       ...
-       const consultas = foo();  
-       b.process(consultas);
-   } catch (e) {
-       console.log(e.message)
-   }
-}
-
-```
-
-```json
+producer.js
+```js
 const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
-const EVENT_NAME = "ORDENES_PAGO"
 
 let bottleneck;
 
 module.exports.handler = async (orden) => {
    try {
         if(bottleneck === undefined) {
-          bottleneck = new Bottleneck(EVENT_NAME)
+          bottleneck = new Bottleneck(process.env.EVENT_NAME, process.env.BOTTLENECK_ENDPOINT)
           await bottleneck.configure({
             notificationsPerMinute: 60
             notificationsSize: 10
@@ -65,40 +46,39 @@ module.exports.handler = async (orden) => {
 
 #### Serverless
 serveless.yml
-```json
+```yml
 ...
 
 functions:
-  suscripcion:
+  producer:
     name: ...
     handler: consumer.handler
-    deadLetter:
-      sqs:  tgr-lab-suscripcionClienteBasket-DLQ      
+    environment:
+      - BOTTLENECK_ENDPOINT: ${ssm:/tgr/common/bottleneck/api/endpoint}
+      - EVENT_NAME: "ORDENES_PAGO"
+
+  consumer:
+    name: ...
+    handler: consumer.handler
     events:
       - sns:
           arn: ${ssm:/tgr/common/bottleneck/sns/arn}
           topicName: ${ssm:/tgr/common/bottleneck/sns/topics/event}
           filterPolicy:
-            eventType: "ORDENES_PAGO"
+            EVENT_NAME: "ORDENES_PAGO"
 
 ```
 consumer.js
-```json
-const axios = require('axios');
-const qs = require('qs');
+```js
 
 module.exports.handler = async (event) => {
-  const msj = event.Records[0];
+  const record = event.Records[0];
    try {
-      const obj = mjs.Sns.Message;      
+      const group = record.Sns.Message;      
       ...
-      const config = {
-            method: 'POST',
-            url: TOKEN_URL,
-            headers: {HEADERS},
-            data: qs.stringify(obj)
-        }
-      const res = await axios(config);
+      foreach(element in group) {
+        console.log(element) // un elemento del grupo
+      }
       ...
        
    } catch (e) {
