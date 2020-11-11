@@ -3,11 +3,8 @@
 ## Introducción
 Esta librería permite simplificar el proceso de envío de solicitudes (requests) a APIS externas por parte de los servicios de la TGR. Especialmente cuando se requiere realizar invocaciones a servicios que tienen una cantidad acotada de transacciones que pueden atender por minuto.
 
-<<<<<<< HEAD
 El funcionamiento se asemeja a un gran contenedor de transacciones, las que son despachadas en grupos pequeños hasta que se consumen todas las operaciones.
-=======
-El funcionamiento se asemeja a un gran canasto de transacciones, las que van siendo despachadas en grupos más pequeños hasta que se consumen todas las operaciones.
->>>>>>> 7008e00113a1e345ce4aca05a9b93a73f560a950
+
 
 Los siguientes pasos, resumen la operación en general:
 - Se inicializa la instancia indicando: un nombre descriptivo y una máximo de transacciones por minuto.
@@ -55,11 +52,7 @@ functions:
     timeout: 30
     events:
       - sns:
-<<<<<<< HEAD
           arn: !Ref TopicBasket
-=======
-          arn: !Ref TopicGeneral
->>>>>>> 7008e00113a1e345ce4aca05a9b93a73f560a950
           topicName: TGR-#{custom::env}-TOPIC-BASKET-API
           filterPolicy:
             eventType: "ConsultaSRCeI"
