@@ -27,9 +27,14 @@ module.exports.handler = async (orden) => {
    try {
         if(bottleneck === undefined) {
           bottleneck = new Bottleneck(process.env.EVENT_NAME, process.env.BOTTLENECK_ENDPOINT)
+
           await bottleneck.configure({
-            notificationsPerMinute: 60
-            notificationsSize: 10
+            notificationsPerMinute: 60,
+            notificationSize: 10,
+            notificationChannel: {
+              type: 'LAMBDA',
+              arn: process.env.CONSUMER_LAMBDA_ARN
+            }
           })
        }
        ...
@@ -39,7 +44,17 @@ module.exports.handler = async (orden) => {
        console.log(e.message)
    }
 }
+```
 
+consumer.js
+```js
+module.exports.handler = async (group) => {
+  ...
+  foreach(element in group) {
+    console.log(element) // un elemento del grupo
+  }
+  ...
+}
 ```
 
 ### Recepción transacciones.
@@ -56,36 +71,14 @@ functions:
     environment:
       - BOTTLENECK_ENDPOINT: ${ssm:/tgr/common/bottleneck/api/endpoint}
       - EVENT_NAME: "ORDENES_PAGO"
+      - CONSUMER_LAMBDA_ARN: !Ref consumer
 
   consumer:
     name: ...
     handler: consumer.handler
-    events:
-      - sns:
-          arn: ${ssm:/tgr/common/bottleneck/sns/arn}
-          topicName: ${ssm:/tgr/common/bottleneck/sns/topics/event}
-          filterPolicy:
-            EVENT_NAME: "ORDENES_PAGO"
-
 ```
-consumer.js
-```js
 
-module.exports.handler = async (event) => {
-  const record = event.Records[0];
-   try {
-      const group = record.Sns.Message;      
-      ...
-      foreach(element in group) {
-        console.log(element) // un elemento del grupo
-      }
-      ...
-       
-   } catch (e) {
-       console.log(e.message)
-   }
-}
-```
+
 ## Permisos Lambda
 No requiere permisos especiales.
 
