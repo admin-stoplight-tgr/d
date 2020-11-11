@@ -21,12 +21,10 @@ producer.js
 ```js
 const {Bottleneck} = require('tgr-sdk/clients/bottleneck')
 
-let bottleneck = new Bottleneck(process.env.QUEUE);
-
 module.exports.handler = async (orden) => {
    try {
        ...
-       await bottleneck.enqueue(orden);
+       await sqs.enqueue(orden);
        ...
    } catch (e) {
        console.log(e.message)
