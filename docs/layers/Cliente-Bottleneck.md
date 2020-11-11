@@ -29,11 +29,13 @@ module.exports.handler = async (orden) => {
           bottleneck = new Bottleneck(process.env.EVENT_NAME, process.env.BOTTLENECK_ENDPOINT)
 
           await bottleneck.configure({
-            notificationsPerMinute: 60,
-            notificationSize: 10,
-            notificationChannel: {
-              type: 'LAMBDA',
-              arn: process.env.CONSUMER_LAMBDA_ARN
+            notification: {
+              perMinute: 60,
+              size: 10,
+              channel: {
+                type: 'LAMBDA',
+                arn: process.env.CONSUMER_LAMBDA_ARN
+              }
             }
           })
        }
