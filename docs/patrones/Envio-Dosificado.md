@@ -14,6 +14,10 @@ El mecanismo consiste en los siguientes pasos:
 
 El siguiente código corresponde al productor. Está implementado como una lambda que encola un gran numero de objetos.
 
+<!--
+title: "productor.js"
+lineNumbers: true
+-->
 ```js
 let SQS = require('aws-sdk/clients/sqs');
 let sqs = new SQS({ region: 'us-east-1' });
@@ -35,6 +39,10 @@ module.exports.handler = async(event) => {
 
 La siguiente lambda implementa al dosificador, el cual utiliza una estrategia de consumo de la cola que esta implementada en la libreria *tgr-sdk/clients/queue-workers*.
 
+<!--
+title: "dosificador.js"
+lineNumbers: true
+-->
 ```js
 const { DosificadorQueueWorker, DosificadorChannelTypes } = require('tgr-sdk/helpers/queue-workers')
 
@@ -56,6 +64,10 @@ module.exports.handler = worker.dequeue
 
 El siguiente codigo muestra la configuración usando el framework serverless.
 
+<!--
+title: "serverless.yml"
+lineNumbers: true
+-->
 ```yml
 service: envio-dosificado
 
