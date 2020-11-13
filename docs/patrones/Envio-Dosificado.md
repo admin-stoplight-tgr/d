@@ -7,16 +7,16 @@ Este patrón define un mecanismo de procesamiento dosificado de objetos masivos.
 ## Mecanismo
 
 El mecanismo consiste en los siguientes pasos:
-- Un productor va encolando objetos en una cola de dosificacion.
-- Una lambda dosificadora es invocada cada 1 minuto y desencola mensajes. Esta lambda tiene 2 parametros: una cuota N que corresponde al máximo de invocaciones por minuto y una cantidad M que corresponde a la cantidad de objetos que envía en cada invocacion.
-- Entonces, cada 1 minuto el dosificador invoca de manera asincrona una cantidad N de veces a una lambda receptora pasando en cada invocacion un numero M de mensajes.
-- La lambda receptora recibe entonces M mensajes y los procesa.
+- Un productor va encolando objetos en una cola de envío dosificado.
+- Una lambda dosificadora es invocada cada 1 minuto y desencola mensajes. Esta lambda tiene 2 parámetros: una cuota *N* que corresponde al máximo de invocaciones por minuto y una cantidad *M* que corresponde a la cantidad de objetos que envía en cada invocación.
+- Entonces, cada 1 minuto el dosificador invoca de manera asíncrona una cantidad *N* de veces a una lambda receptora pasando en cada invocación un numero *M* de mensajes.
+- La lambda receptora recibe entonces *M* mensajes y los procesa.
 
 ## Implementación
 
 Se implementó un ejemplo de implementación del patrón que está disponible en el repositorio git [ejemplos-patrones](https://console.aws.amazon.com/codesuite/codecommit/repositories/ejemplos-patrones/browse?region=us-east-1). A continuación damos una descripción.
 
-El siguiente código corresponde al productor. Está implementado como una lambda que encola un gran numero de objetos.
+El siguiente código corresponde al productor. Está implementado como una lambda que encola un gran número de objetos.
 
 <!--
 title: "productor.js"
@@ -67,7 +67,7 @@ module.exports.handler = () => {
     worker.dequeue()
 }
 ```
-La siguiente imagen muestra el código del receptor que para este ejemplo solo imprime el objeto recibido. Acá es donde se debe implementar el procesamiento que puede por ejemplo corresponder a la invocación a una API externa.
+La siguiente imagen muestra el código del receptor, que para este ejemplo solo imprime el objeto recibido. Acá es donde se debe implementar el procesamiento que puede, por ejemplo, corresponder a la invocación a una API externa.
 <!--
 title: "receptor.js"
 lineNumbers: true
@@ -84,7 +84,12 @@ module.exports = {
 }
 ```
 
-El siguiente codigo muestra la configuración usando el framework serverless. Las líneas 10-21 definen los permisos necesarios para las lambdas. Si se trabaja con terraform para definir el rol entonces hay que incluir esos permisos en terraform. En las líneas 38-39 se incluye el layer para ser usado en la lambda *dosificador*. En las líneas 42-43 se define que el dosificador se invoque cada 1 minuto. Entre las líneas 50 y 55 se crea la cola para el envío dosificado.
+El siguiente código muestra la configuración usando el framework serverless. 
+
+- Las líneas 10-21 definen los permisos necesarios para las lambdas. Si se trabaja con terraform para definir el rol entonces hay que incluir esos permisos en terraform. 
+- En las líneas 38-39 se incluye el layer para ser usado en la lambda *dosificador*. 
+- En las líneas 42-43 se define que el dosificador se invoque cada 1 minuto. 
+- Entre las líneas 50 y 55 se crea la cola para el envío dosificado.
 
 <!--
 title: "serverless.yml"
