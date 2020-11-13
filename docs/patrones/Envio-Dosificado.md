@@ -2,7 +2,7 @@
 
 Este patrón define un mecanismo de procesamiento dosificado de objetos masivos. Dado un conjunto de objetos, el mecanismo permite procesar subconjuntos de objetos por minuto. Un caso de uso es invocar una API externa que puede atender una cantidad acotada de transacciones por minuto.
 
-![Imagen del patron](https://raw.githubusercontent.com/admin-stoplight-tgr/d/master/assets/images/patron.png?token=AQMQJ7F5ISDA2AF236HAJ327V3OPY)
+![Imagen del patron](../../assets/images/patron.png)
 
 ## Mecanismo
 
