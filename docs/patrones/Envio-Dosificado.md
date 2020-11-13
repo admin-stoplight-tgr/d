@@ -1,4 +1,4 @@
-# Envio Dosificado
+# Envío Dosificado
 
 Este patrón define un mecanismo de procesamiento dosificado de objetos masivos. Dado un conjunto de objetos, el mecanismo permite procesar subconjuntos de objetos por minuto. Un caso de uso es invocar una API externa que puede atender una cantidad acotada de transacciones por minuto.
 
@@ -13,6 +13,8 @@ El mecanismo consiste en los siguientes pasos:
 - La lambda receptora recibe entonces M mensajes y los procesa.
 
 ## Implementación
+
+Se implementó un ejemplo de implementación del patrón que está disponible en el repositorio git [ejemplos-patrones](https://console.aws.amazon.com/codesuite/codecommit/repositories/ejemplos-patrones/browse?region=us-east-1). A continuación damos una descripción.
 
 El siguiente código corresponde al productor. Está implementado como una lambda que encola un gran numero de objetos.
 
