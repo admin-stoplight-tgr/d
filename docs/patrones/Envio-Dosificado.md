@@ -63,8 +63,24 @@ let worker = new DosificadorQueueWorker({
 
 module.exports.handler = worker.dequeue
 ```
+La siguiente imagen muestra el código del receptor que para este ejemplo solo imprime el objeto recibido. Acá es donde se debe implementar el procesamiento que puede por ejemplo corresponder a la invocación a una API externa.
+<!--
+title: "receptor.js"
+lineNumbers: true
+-->
+```js
+let handler = (event) => {
+    let mensajes = JSON.parse(event)
+    console.log('numero mensajes recibidos', mensajes.length)
+    console.log('ejemplo mensaje', mensajes[0])
+}
 
-El siguiente codigo muestra la configuración usando el framework serverless.
+module.exports = {
+    handler
+}
+```
+
+El siguiente codigo muestra la configuración usando el framework serverless. Las líneas 10-21 definen los permisos necesarios para las lambdas. Si se trabaja con terraform para definir el rol entonces hay que incluir esos permisos en terraform. En las líneas 42-43 se define que el dosificador se invoque cada 1 minuto.
 
 <!--
 title: "serverless.yml"
