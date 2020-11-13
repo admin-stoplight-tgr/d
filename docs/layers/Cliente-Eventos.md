@@ -1,3 +1,7 @@
+---
+tags: [servicio]
+---
+
 # Cliente Eventos
 
 ## Introducción
@@ -71,7 +75,7 @@ statement {
   }
 ```
 
-## Permisos Lambda 
+## Permisos Lambda
 
 Al usar la librería, internamente se hace una llamada a un topic SNS. Para que esto funcione el rol de ejecución de la lambda debe tener permisos para invocar el servicio SNS. La autorización se define en estos momentos a nivel de terraform. El rol de ejecución de la lambda tiene que tener el siguiente permiso:
 
@@ -97,7 +101,6 @@ statement {
 }
 
 ```
-
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTA2MzM0NTUyN119
