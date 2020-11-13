@@ -84,7 +84,7 @@ module.exports = {
 }
 ```
 
-El siguiente codigo muestra la configuración usando el framework serverless. Las líneas 10-21 definen los permisos necesarios para las lambdas. Si se trabaja con terraform para definir el rol entonces hay que incluir esos permisos en terraform. En las líneas 42-43 se define que el dosificador se invoque cada 1 minuto. Entre las líneas 50 y 55 se crea la cola para el envío dosificado.
+El siguiente codigo muestra la configuración usando el framework serverless. Las líneas 10-21 definen los permisos necesarios para las lambdas. Si se trabaja con terraform para definir el rol entonces hay que incluir esos permisos en terraform. En las líneas 38-39 se incluye el layer para ser usado en la lambda *dosificador*. En las líneas 42-43 se define que el dosificador se invoque cada 1 minuto. Entre las líneas 50 y 55 se crea la cola para el envío dosificado.
 
 <!--
 title: "serverless.yml"
