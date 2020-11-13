@@ -37,14 +37,21 @@ module.exports = {
 La siguiente lambda implementa al dosificador, el cual utiliza una estrategia de consumo de la cola que esta implementada en la libreria *tgr-sdk/clients/queue-workers*.
 
 ```js
-const {QueueWorkers} = require('tgr-sdk/helpers/queue-workers')
+const {DosificadorQueueWorker, DosificadorChannelTypes} = require('tgr-sdk/helpers/queue-workers')
 
 let N = 60;
 let M = 5
-let channel = {type: QueueWorkers.LAMBDA_CHANNEL, arn: process.env.INVOKER_ARN}
 
-let workers = new QueueWorkers(process.env.QUEUE_URL)
-module.exports.handler = bottleneck.getDosificadorFunction({perMinute: N, perInvocation: M, channel});
+let worker = new DosificadorQueueWorker({
+  queueURL: process.env.QUEUE_URL, 
+  perMinute: N, 
+  perInvocation: M, 
+  channel: {type: QueueWorkers.LAMBDA_CHANNEL, lambdaName: process.env.INVOKER_ARN}
+  })
+
+module.exports.handler = () => {
+  worker.dequeue()
+};
 ```
 
 El siguiente codigo muestra la configuración usando el framework serverless.
