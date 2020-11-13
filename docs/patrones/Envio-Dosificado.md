@@ -75,8 +75,7 @@ title: "receptor.js"
 lineNumbers: true
 -->
 ```js
-let handler = (event) => {
-    let mensajes = JSON.parse(event)
+let handler = (mensajes) => {
     console.log('numero mensajes recibidos', mensajes.length)
     console.log('ejemplo mensaje', mensajes[0])
 }
@@ -128,19 +127,21 @@ functions:
   productor:
     name: ${self:custom.prefix}-productor
     handler: src/handlers/productor.handler
+    timeout: 60
     environment:
       QUEUE_URL: !Ref ColaEnvioDosificado
 
   dosificador:
     name: ${self:custom.prefix}-dosificador
     handler: src/handlers/dosificador.handler
+    timeout: 60
     layers:
      - ${ssm:/tgr/common/tgr-sdk-layer-arn}
     environment:
       QUEUE_URL: !Ref ColaEnvioDosificado
       FUNCTION_NAME: ${self:custom.prefix}-receptor
-    events:
-      - schedule: "rate(1 minute)"
+    #events:
+    #  - schedule: "rate(1 minute)"
 
   receptor:
     name: ${self:custom.prefix}-receptor
@@ -152,6 +153,5 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: ${self:custom.prefix}-envio-dosificado
-
 ```
 
