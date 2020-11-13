@@ -26,7 +26,7 @@ lineNumbers: true
 let SQS = require('aws-sdk/clients/sqs');
 let sqs = new SQS({ region: 'us-east-1' });
 
-let AMOUNT = 1000;
+let AMOUNT = 200;
 
 module.exports.handler = async(event) => {
     for (let i = 0; i < AMOUNT; ++i) {
