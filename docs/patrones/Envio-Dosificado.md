@@ -1,5 +1,7 @@
 # Envío Dosificado
 
+## Descripción
+
 Este patrón define un mecanismo de procesamiento dosificado de objetos masivos. Dado un conjunto de objetos, el mecanismo permite procesar subconjuntos de objetos por minuto. Un caso de uso es invocar una API externa que puede atender una cantidad acotada de transacciones por minuto.
 
 ![Imagen del patron](../../assets/images/patron.png)
