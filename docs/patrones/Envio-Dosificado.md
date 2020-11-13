@@ -56,12 +56,14 @@ let worker = new DosificadorQueueWorker({
     perMinute: N,
     perInvocation: M,
     channel: {
-        type: DosificadorChannelTypes.LAMBDA_CHANNEL,
+        type: DosificadorChannelTypes.LAMBDA,
         lambdaName: process.env.FUNCTION_NAME
     }
 })
 
-module.exports.handler = worker.dequeue
+module.exports.handler = () => {
+    worker.dequeue()
+}
 ```
 La siguiente imagen muestra el código del receptor que para este ejemplo solo imprime el objeto recibido. Acá es donde se debe implementar el procesamiento que puede por ejemplo corresponder a la invocación a una API externa.
 <!--
