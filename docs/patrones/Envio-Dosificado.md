@@ -2,6 +2,8 @@
 
 Este patrón define un mecanismo de procesamiento dosificado de objetos masivos. Dado un conjunto de objetos, el mecanismo permite procesar subconjuntos de objetos por minuto. Un caso de uso es invocar una API externa que puede atender una cantidad acotada de transacciones por minuto.
 
+![Imagen del patrón](../../assets/images/patron.png)
+
 ## Mecanismo
 
 El mecanismo consiste en los siguientes pasos:
@@ -37,7 +39,7 @@ module.exports.handler = async(event) => {
 };
 ```
 
-La siguiente lambda implementa al dosificador, el cual utiliza una estrategia de consumo de la cola que esta implementada en la libreria *tgr-sdk/clients/queue-workers*.
+La siguiente lambda implementa al dosificador, el cual utiliza una estrategia de consumo de la cola que esta implementada en la libreria *tgr-sdk/clients/queue-workers* la cual se incluye a través de un layer.
 
 <!--
 title: "dosificador.js"
@@ -111,8 +113,8 @@ functions:
     environment:
       QUEUE_URL: !Ref ColaEnvioDosificado
       FUNCTION_NAME: ${self:custom.prefix}-receptor
-    #events:
-    #  - schedule: "rate(1 minute)"
+    events:
+      - schedule: "rate(1 minute)"
 
   receptor:
     name: ${self:custom.prefix}-receptor
