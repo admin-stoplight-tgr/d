@@ -140,8 +140,8 @@ functions:
     environment:
       QUEUE_URL: !Ref ColaEnvioDosificado
       FUNCTION_NAME: ${self:custom.prefix}-receptor
-    #events:
-    #  - schedule: "rate(1 minute)"
+    events:
+      - schedule: "rate(1 minute)"
 
   receptor:
     name: ${self:custom.prefix}-receptor
